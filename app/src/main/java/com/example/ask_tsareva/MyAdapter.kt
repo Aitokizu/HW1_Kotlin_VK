@@ -3,6 +3,7 @@ package com.example.ask_tsareva
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.ContextCompat
 
 class MyAdapter(): RecyclerView.Adapter<MyViewHolder>() {
 
@@ -21,7 +22,15 @@ class MyAdapter(): RecyclerView.Adapter<MyViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.bind(items[position])
+        val number = items[position]
+        holder.bind(number)
+        val context = holder.itemView.context
+        val colorRes = if (number % 2 == 0){
+            R.color.red
+        } else {
+            R.color.purple_500
+        }
+        holder.image.setBackgroundColor(ContextCompat.getColor(context, colorRes))
     }
 
     fun setItems(list:List<Int>){
@@ -33,5 +42,9 @@ class MyAdapter(): RecyclerView.Adapter<MyViewHolder>() {
     fun addItems(item: Int){
         items.add(item)
         notifyDataSetChanged()
+    }
+
+    fun getItems(): List<Int>{
+        return items
     }
 }

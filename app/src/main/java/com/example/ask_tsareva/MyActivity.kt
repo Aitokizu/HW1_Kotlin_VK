@@ -15,15 +15,33 @@ class MyActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         recyclerView = findViewById(R.id.recycler_view)
+        fab = findViewById(R.id.fab)
 
         recyclerView.adapter = adapter
 
-        fab = findViewById(R.id.fab)
+
         fab.setOnClickListener{
             adapter.addItems(adapter.itemCount+1)
+            recyclerView.scrollToPosition(adapter.itemCount-1)
 
         }
-        adapter.setItems(listOf(1,2,3,4,5))
+
+        if(savedInstanceState != null){
+            val savedItems = savedInstanceState.getIntegerArrayList("items")?: listOf(1,2,3,4,5)
+            adapter.setItems(savedItems)
+
+
+        } else {
+
+            adapter.setItems(listOf(1, 2, 3, 4, 5))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putIntegerArrayList("items", ArrayList(adapter.getItems()))
+
     }
 }
